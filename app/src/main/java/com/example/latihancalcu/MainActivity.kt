@@ -1,100 +1,151 @@
 package com.example.latihancalcu
 
 import android.os.Bundle
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.latihancalcu.R
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var workingsTextView: TextView
     private lateinit var resultTextView: TextView
-    private lateinit var operationTextView: TextView
-    private var input: String = ""
-    private var operator: String = ""
-    private var value1: Double = Double.NaN
-    private var value2: Double = 0.0
+    private var workings = ""
+    private var result = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        resultTextView = findViewById(R.id.resultTextView)
-        operationTextView = findViewById(R.id.operationTextView)
+        workingsTextView = findViewById(R.id.txt_operation)
+        resultTextView = findViewById(R.id.txt_result)
 
-        // Set click listeners for number buttons
-        setNumberClickListeners()
-
-        // Set operator buttons
-        setOperatorClickListeners()
+        setButtonListeners()
     }
 
-    private fun setNumberClickListeners() {
-        val numberButtons = listOf(
-            R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3,
-            R.id.btn4, R.id.btn5, R.id.btn6, R.id.btn7,
-            R.id.btn8, R.id.btn9
-        )
+    private fun setButtonListeners() {
+        findViewById<TextView>(R.id.btn0).setOnClickListener { appendNumber("0") }
+        findViewById<TextView>(R.id.btn1).setOnClickListener { appendNumber("1") }
+        findViewById<TextView>(R.id.btn2).setOnClickListener { appendNumber("2") }
+        findViewById<TextView>(R.id.btn3).setOnClickListener { appendNumber("3") }
+        findViewById<TextView>(R.id.btn4).setOnClickListener { appendNumber("4") }
+        findViewById<TextView>(R.id.btn5).setOnClickListener { appendNumber("5") }
+        findViewById<TextView>(R.id.btn6).setOnClickListener { appendNumber("6") }
+        findViewById<TextView>(R.id.btn7).setOnClickListener { appendNumber("7") }
+        findViewById<TextView>(R.id.btn8).setOnClickListener { appendNumber("8") }
+        findViewById<TextView>(R.id.btn9).setOnClickListener { appendNumber("9") }
 
-        for (id in numberButtons) {
-            findViewById<Button>(id).setOnClickListener {
-                input += (it as Button).text.toString()
-                updateOperationTextView()
-            }
-        }
+        findViewById<TextView>(R.id.btnPlus).setOnClickListener { appendOperator("+") }
+        findViewById<TextView>(R.id.btnMinus).setOnClickListener { appendOperator("-") }
+        findViewById<TextView>(R.id.btnKali).setOnClickListener { appendOperator("*") }
+        findViewById<TextView>(R.id.btnDivide).setOnClickListener { appendOperator("/") }
+        findViewById<TextView>(R.id.btnPercent).setOnClickListener { appendOperator("%") }
+
+        findViewById<TextView>(R.id.btnAC).setOnClickListener { clearAll() }
+        findViewById<TextView>(R.id.btnSamadengan).setOnClickListener { calculateResult() }
+        findViewById<TextView>(R.id.btnPoint).setOnClickListener { appendDot() }
     }
 
-    private fun setOperatorClickListeners() {
-        findViewById<Button>(R.id.btnAdd).setOnClickListener { setOperator("+") }
-        findViewById<Button>(R.id.btnSubtract).setOnClickListener { setOperator("-") }
-        findViewById<Button>(R.id.btnMultiply).setOnClickListener { setOperator("*") }
-        findViewById<Button>(R.id.btnDivide).setOnClickListener { setOperator("/") }
-
-        findViewById<Button>(R.id.btnEquals).setOnClickListener { calculateResult() }
-        findViewById<Button>(R.id.btnClear).setOnClickListener { clearAll() }
+    private fun appendNumber(number: String) {
+        workings += number
+        workingsTextView.text = workings
     }
 
-    private fun setOperator(op: String) {
-        if (!value1.isNaN()) {
-            calculateResult()
-        } else {
-            value1 = input.toDoubleOrNull() ?: Double.NaN
-        }
-        operator = op
-        input = ""
-        updateOperationTextView()
+    private fun appendOperator(operator: String) {
+        if (workings.isNotEmpty() && "+-*/%".contains(workings.last())) return
+        workings += operator
+        workingsTextView.text = workings
     }
 
-    private fun calculateResult() {
-        if (input.isNotEmpty()) {
-            value2 = input.toDoubleOrNull() ?: 0.0
-            value1 = when (operator) {
-                "+" -> value1 + value2
-                "-" -> value1 - value2
-                "*" -> value1 * value2
-                "/" -> if (value2 != 0.0) value1 / value2 else Double.NaN
-                else -> value1
-            }
-            resultTextView.text = if (value1.isNaN()) "Error" else value1.toString()
-            input = ""
-            operator = ""
-            operationTextView.text = ""
+    private fun appendDot() {
+        if (workings.isNotEmpty() && !workings.endsWith(".")) {
+            workings += "."
+            workingsTextView.text = workings
         }
     }
 
     private fun clearAll() {
-        value1 = Double.NaN
-        value2 = Double.NaN
-        input = ""
-        resultTextView.text = "0"
-        operationTextView.text = ""
+        workings = ""
+        result = ""
+        workingsTextView.text = workings
+        resultTextView.text = result
     }
 
-    private fun updateOperationTextView() {
-        // Update tampilan operasi di TextView atas
-        operationTextView.text = if (operator.isNotEmpty()) {
-            "$value1 $operator $input"
-        } else {
-            input
+    private fun calculateResult() {
+        try {
+            val evalResult = eval(workings)
+            result = evalResult.toString()
+            resultTextView.text = result
+        } catch (e: Exception) {
+            resultTextView.text = "Error"
         }
+    }
+
+    // Function to evaluate mathematical expression
+    private fun eval(expression: String): Double {
+        return object {
+            var pos = -1
+            var ch: Char = ' '
+
+            fun nextChar() {
+                ch = if (++pos < expression.length) expression[pos] else (-1).toChar()
+            }
+
+            fun eat(charToEat: Char): Boolean {
+                while (ch == ' ') nextChar()
+                if (ch == charToEat) {
+                    nextChar()
+                    return true
+                }
+                return false
+            }
+
+            fun parse(): Double {
+                nextChar()
+                val x = parseExpression()
+                if (pos < expression.length) throw RuntimeException("Unexpected: $ch")
+                return x
+            }
+
+            fun parseExpression(): Double {
+                var x = parseTerm()
+                while (true) {
+                    x = when {
+                        eat('+') -> x + parseTerm()
+                        eat('-') -> x - parseTerm()
+                        else -> return x
+                    }
+                }
+            }
+
+            fun parseTerm(): Double {
+                var x = parseFactor()
+                while (true) {
+                    x = when {
+                        eat('*') -> x * parseFactor()
+                        eat('/') -> x / parseFactor()
+                        eat('%') -> x % parseFactor()
+                        else -> return x
+                    }
+                }
+            }
+
+            fun parseFactor(): Double {
+                if (eat('+')) return parseFactor() // unary plus
+                if (eat('-')) return -parseFactor() // unary minus
+
+                var x: Double
+                val startPos = this.pos
+                if (eat('(')) { // parentheses
+                    x = parseExpression()
+                    eat(')')
+                } else if ((ch in '0'..'9') || ch == '.') { // numbers
+                    while ((ch in '0'..'9') || ch == '.') nextChar()
+                    x = expression.substring(startPos, this.pos).toDouble()
+                } else {
+                    throw RuntimeException("Unexpected: $ch")
+                }
+                return x
+            }
+        }.parse()
     }
 }

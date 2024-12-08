@@ -1,173 +1,256 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp"
-    android:background="#FFFFFF">
+    tools:context=".MainActivity">
 
-    <GridLayout
-        android:layout_width="match_parent"
+    <!-- Guidelines -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontal1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:rowCount="2"
-        android:columnCount="1">
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2" />
 
-        <!-- Text di atas -->
-        <TextView
-            android:id="@+id/operationTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:textSize="30sp"
-            android:text=""
-            android:textColor="#757575"
-            android:paddingEnd="20dp"
-            android:paddingBottom="5dp"
-            android:layout_row="0" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontal2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="270dp" />
 
-        <!-- Text di bawah -->
-        <TextView
-            android:id="@+id/resultTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:textSize="48sp"
-            android:text="0"
-            android:textColor="#757575"
-            android:padding="24dp"
-            android:layout_row="1" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="8dp" />
 
-    </GridLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25304136" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.98" />
+
+
+    <!-- Display Section -->
+    <TextView
+        android:id="@+id/txt_operation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="#6A6A6A"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal1" />
+
+    <TextView
+        android:id="@+id/txt_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="#6A6A6A"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_operation" />
+
+    <!-- Separator -->
     <View
-        android:layout_width="170dp"
-        android:layout_height="5dp"
-        android:background="@drawable/line"
-        android:layout_margin="3dp"/>
+        android:layout_width="150dp"
+        android:layout_height="2dp"
+        android:src="@drawable/line"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal2" />
 
+    <!-- Buttons Row 1 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAC"
+        style="@style/Button"
+        android:backgroundTint="#FF8F00"
+        android:text="AC"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal2" />
 
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:rowCount="5"
-        android:columnCount="4"
-        android:padding="16dp">
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnPercent"
+        style="@style/Button"
+        android:text="%"
+        android:textColor="#FF8F00"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical3"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertical2"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal2" />
 
-        <!-- Baris 1 -->
-        <Button android:id="@+id/btnClear"
-            android:text="AC"
-            style="@style/CalcButton"
-            android:backgroundTint="#FFA500"
-            android:textColor="#FFFFFF"
-            />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnDivide"
+        style="@style/Button"
+        android:text="/"
+        android:textColor="#FF8F00"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical4"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertical3"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal2" />
 
-        <Button android:id="@+id/btnPercent"
-            android:text="%"
-            style="@style/CalcButton"
-            android:backgroundTint="#EEEEEE"
-            android:textColor="#FFA500" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnKali"
+        style="@style/Button"
+        android:text="x"
+        android:textColor="#FF8F00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertical4"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal2" />
 
-        <Button android:id="@+id/btnDivide"
-            android:text="/"
-            style="@style/CalcButton"
-            android:backgroundTint="#EEEEEE"
-            android:textColor="#FFA500" />
+    <!-- Buttons Row 2 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn7"
+        style="@style/Button"
+        android:text="7"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAC" />
 
-        <Button android:id="@+id/btnMultiply"
-            android:text="x"
-            style="@style/CalcButton"
-            android:backgroundTint="#EEEEEE"
-            android:textColor="#FFA500" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn8"
+        style="@style/Button"
+        android:text="8"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical3"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertical2"
+        app:layout_constraintTop_toBottomOf="@+id/btnPercent" />
 
-        <!-- Baris 2 -->
-        <Button android:id="@+id/btn7"
-            android:text="7"
-            style="@style/CalcButton"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#757575" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn9"
+        style="@style/Button"
+        android:text="9"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical4"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertical3"
+        app:layout_constraintTop_toBottomOf="@+id/btnDivide" />
 
-        <Button android:id="@+id/btn8"
-            android:text="8"
-            style="@style/CalcButton"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#757575" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnPlus"
+        style="@style/Button"
+        android:text="+"
+        android:textColor="#FF8F00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertical4"
+        app:layout_constraintTop_toBottomOf="@+id/btnKali" />
 
-        <Button android:id="@+id/btn9"
-            android:text="9"
-            style="@style/CalcButton"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#757575" />
+    <!-- Buttons Row 3 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn4"
+        style="@style/Button"
+        android:text="4"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn7" />
 
-        <Button android:id="@+id/btnSubtract"
-            android:text="-"
-            style="@style/CalcButton"
-            android:backgroundTint="#EEEEEE"
-            android:textColor="#FFA500" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn5"
+        style="@style/Button"
+        android:text="5"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical3"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertical2"
+        app:layout_constraintTop_toBottomOf="@+id/btn8" />
 
-        <!-- Baris 3 -->
-        <Button android:id="@+id/btn4"
-            android:text="4"
-            style="@style/CalcButton"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#757575" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn6"
+        style="@style/Button"
+        android:text="6"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical4"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertical3"
+        app:layout_constraintTop_toBottomOf="@+id/btn9" />
 
-        <Button android:id="@+id/btn5"
-            android:text="5"
-            style="@style/CalcButton"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#757575" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnMinus"
+        style="@style/Button"
+        android:text="-"
+        android:textColor="#FF8F00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertical4"
+        app:layout_constraintTop_toBottomOf="@+id/btnPlus" />
 
-        <Button android:id="@+id/btn6"
-            android:text="6"
-            style="@style/CalcButton"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#757575" />
+    <!-- Buttons Row 4 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn1"
+        style="@style/Button"
+        android:text="1"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn4" />
 
-        <Button android:id="@+id/btnAdd"
-            android:text="+"
-            style="@style/CalcButton"
-            android:backgroundTint="#EEEEEE"
-            android:textColor="#FFA500" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn2"
+        style="@style/Button"
+        android:text="2"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical3"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertical2"
+        app:layout_constraintTop_toBottomOf="@+id/btn5" />
 
-        <!-- Baris 4 -->
-        <Button android:id="@+id/btn1"
-            android:text="1"
-            style="@style/CalcButton"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#757575" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn3"
+        style="@style/Button"
+        android:text="3"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical4"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertical3"
+        app:layout_constraintTop_toBottomOf="@+id/btn6" />
 
-        <Button android:id="@+id/btn2"
-            android:text="2"
-            style="@style/CalcButton"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#757575" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSamadengan"
+        style="@style/Button"
+        android:layout_height="162dp"
+        android:backgroundTint="#FF8F00"
+        android:text="="
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="@+id/btnMinus"
+        app:layout_constraintStart_toStartOf="@id/btnMinus"
+        app:layout_constraintTop_toBottomOf="@+id/btnMinus" />
 
-        <Button android:id="@+id/btn3"
-            android:text="3"
-            style="@style/CalcButton"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#757575" />
+    <!-- Buttons Row 5 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn0"
+        style="@style/Button"
+        android:layout_width="178dp"
+        android:text="0"
+        app:layout_constraintEnd_toEndOf="@+id/btn2"
+        app:layout_constraintStart_toStartOf="@id/btn1"
+        app:layout_constraintTop_toBottomOf="@+id/btn1" />
 
-        <Button android:id="@+id/btnEquals"
-            android:text="="
-            style="@style/CalcButton"
-            android:layout_rowSpan="2"
-            android:backgroundTint="#FFA500"
-            android:textColor="#FFFFFF" />
-
-        <!-- Baris 5 -->
-        <Button android:id="@+id/btn0"
-            android:text="0"
-            android:layout_columnSpan="2"
-            style="@style/CalcButton"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#757575" />
-
-        <Button android:id="@+id/btnDot"
-            android:text="."
-            style="@style/CalcButton"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#757575" />
-    </GridLayout>
-
-</LinearLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnPoint"
+        style="@style/Button"
+        android:layout_marginTop="20dp"
+        android:text="."
+        android:textColor="#FF8F00"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical4"
+        app:layout_constraintStart_toEndOf="@+id/guidelineVertical3"
+        app:layout_constraintTop_toBottomOf="@+id/btn3" />
+</androidx.constraintlayout.widget.ConstraintLayout>
